@@ -41,6 +41,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        let message = url.host?.stringByRemovingPercentEncoding
+        let alert = UIAlertController(title: "Incoming Message", message: message, preferredStyle: .Alert)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(okAction)
+        
+        window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+        
+        return true
+    }
 
 }
 

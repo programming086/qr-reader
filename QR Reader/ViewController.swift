@@ -82,7 +82,27 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
             infoLabel.text = metadataObj.stringValue
         }
 
+        launchApp(metadataObj.stringValue)
+    }
+    
+    func launchApp(decodedURL: String) {
+        if presentedViewController != nil {
+            return
+        }
         
+        let alertPrompt = UIAlertController(title: "Open App", message: "You're going to open \(decodedURL)", preferredStyle: .ActionSheet)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .Default, handler: { (action) -> Void in
+            if let url = NSURL(string: decodedURL) {
+                if UIApplication.sharedApplication().canOpenURL(url) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+            }
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertPrompt.addAction(confirmAction)
+        alertPrompt.addAction(cancelAction)
+        
+        presentViewController(alertPrompt, animated: true, completion: nil)
     }
 
 }
